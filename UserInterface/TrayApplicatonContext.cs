@@ -578,6 +578,10 @@ namespace drawbridge
             {
                 this.TitleMenuItem.Image = Properties.Resources.bullet_red;
             }
+            else
+            {
+                this.TitleMenuItem.Image = Properties.Resources.bullet_green;
+            }
 
             dynamic response;
 

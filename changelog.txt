@@ -1,0 +1,71 @@
+[todo]
++ add "start UI on login" feature
++ add gateway ip to protocol and interface
++ allow socks5 proxies for comms with server
++ use mutex in service to prevent double pings instead of tmp file (cleaner, fewer writes)
++ make service install terminals close after running
++ add arbitrary port mappings feature
++ add a help screen
+
+0.0.17
+Fix connection icon not returning to green after connection restored
+
+0.0.16
++ Fix loop handling code to prevent rapid looping in the windows service
+
+0.0.15
++ Fix bug related to permanent keys
+
+0.0.14
++ clean up header parsing code
++ add cancel button to port specifier screen
++ make refresh button launch api call inside of separate thread
+
+0.0.13
++ add machine GUID to encrypted data array
++ add machine GUID to machine information display
+
+0.0.12
++ user flow fixes to service install menus
++ UI improvements to auth settings screens
++ improvements to command bus tester
++ fix bug in NAT lifetimes
+
+0.0.11
++ changes to how the program exits
++ prevent service from pinging when UI is open
++ prevent multiple UI instances
++ make service "react" more quickly after finding to the router
++ make ping service less pointless
+
+0.0.10
++ fix to error reporting
++ fix to version tracking
++ fix service crashing
++ finish command bus tester
++ fix menu layout issue
++ idiot-proofing the auth pages
+
+0.0.9
++ added test command to protocol
++ fixed crash on protocol key import screen
++ add key ttl to context menu
++ fix a load time resource contention issue by starting loop timer later
++ fix settings permission issues
++ make uninstaller remove the service
++ fix really dumb nsis error ;-)
+
+0.0.8
++ fixed problem with command transfer
++ fixed context submenu display issue
++ finished port life select on remote machine
++ finished remote port number specifier
+
+0.0.7
++ better initial flow to obtain api and protocol keys
++ make program exit if no keys entered
++ remove unused library
+
+0.0.6
++ switch to nsis for installer
++ save settings into a subfolder 
