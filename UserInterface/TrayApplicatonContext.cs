@@ -610,7 +610,7 @@ namespace drawbridge
             // Keep running list of discovered machines, so that expired ones can be removed after
             List<string> machineList = new List<string>();
 
-            if (Ping.RemoteMachines != null && Ping.LifeTime > 0)
+            if (Ping.RemoteMachines != null)
             {
                 foreach (KeyValuePair<string, RemoteMachine> b in Ping.RemoteMachines)
                 {
