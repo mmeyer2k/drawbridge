@@ -1,6 +1,6 @@
 Name "Drawbridge"
 
-!define VERSION_STRING "0.0.15"
+!define VERSION_STRING "0.0.16"
 
 !include "MUI2.nsh"
   
@@ -26,10 +26,10 @@ Section
 
 	SetOutPath $INSTDIR
  
-	File drawbridge.exe
-	File Harpocrates.dll
-	File WindowsService.exe
-	File Mono.Nat.dll
+	File UserInterface\bin\Debug\drawbridge.exe
+	File UserInterface\bin\Debug\Harpocrates.dll
+	File UserInterface\bin\Debug\WindowsService.exe
+	File UserInterface\bin\Debug\Mono.Nat.dll
 	
 	createShortCut "$SMPROGRAMS\Drawbridge.lnk" "$INSTDIR\drawbridge.exe"
 	

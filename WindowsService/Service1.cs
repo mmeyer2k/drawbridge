@@ -93,7 +93,7 @@ namespace WindowsService
                 long stamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
                 if (stamp - Int32.Parse(File.ReadAllText(tmp)) < 60)
                 {
-                    this.EventLog.WriteEntry("UI is running... skip.", EventLogEntryType.Information);
+                    this.EventLog.WriteEntry("UI is running... skipping ping.", EventLogEntryType.Information);
 
                     return;
                 }
@@ -130,11 +130,14 @@ namespace WindowsService
             // If this ping request resulted in commands which were processed, then a 
             // new thread should run another ping request to send any updated status
             // back to the central server
-            new Thread(() =>
+            if (ping.Command != null)
             {
-                Thread.CurrentThread.IsBackground = true;
-                this.OnTimer(null, null);
-            }).Start();
+                new Thread(() =>
+                {
+                    Thread.CurrentThread.IsBackground = true;
+                    this.OnTimer(null, null);
+                }).Start();
+            }
         }
 
         private void DeviceFound(object sender, DeviceEventArgs args)
