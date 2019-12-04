@@ -111,7 +111,7 @@ namespace WindowsService
             // write a log entry and abory until next loop
             if (this.RouterFound == false || ApiKey == "" || Key == "")
             {
-                this.EventLog.WriteEntry("Skipping ping.", EventLogEntryType.Warning);
+                //this.EventLog.WriteEntry("Skipping ping.", EventLogEntryType.Warning);
 
                 return;
             }
@@ -124,7 +124,7 @@ namespace WindowsService
             }
             catch (Exception exc)
             {
-                this.EventLog.WriteEntry(exc.ToString(), EventLogEntryType.Warning);
+                //this.EventLog.WriteEntry(exc.ToString(), EventLogEntryType.Warning);
             }
 
             // If this ping request resulted in commands which were processed, then a 
