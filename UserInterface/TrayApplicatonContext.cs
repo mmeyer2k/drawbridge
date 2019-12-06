@@ -60,6 +60,7 @@ namespace drawbridge
                 }
 
                 NatUtility.DeviceFound += DeviceFound;
+                NatUtility.Logger = Console.Out;
                 NatUtility.StartDiscovery();
 
                 Application.ApplicationExit += new EventHandler(this.OnApplicationExit);
@@ -565,8 +566,8 @@ namespace drawbridge
             if (Router == null)
             {
                 this.TitleMenuItem.Image = Properties.Resources.bullet_yellow;
+
                 this.TitleMenuItem.ToolTipText = "Your router does not seem to support all required features.";
-                return;
             }
             else
             {
@@ -586,6 +587,7 @@ namespace drawbridge
             dynamic response;
 
             Ping = new PingRequest();
+
             try
             {
                 response = await Ping.SendAsync(Router, ApiKey, Key);
@@ -601,7 +603,14 @@ namespace drawbridge
 
             // Check with router to see if port is open
             // This allows the system to detect if port is still forwarded from a previous
-            Mapping RoutedPort = this.Router.GetSpecificMapping(Protocol.Tcp, Int32.Parse(Registry.Get("Port")));
+            try
+            {
+                Mapping RoutedPort = this.Router.GetSpecificMapping(Protocol.Tcp, Int32.Parse(Registry.Get("Port")));
+            }
+            catch (Exception exc)
+            {
+
+            }
             this.isPortOpen = Ping.IsPortMapped;
 
             // If account is good, make menu header icon green
@@ -740,8 +749,14 @@ namespace drawbridge
                 ConnectClientMenuItem.Text = "Launch RDP";
                 ConnectClientMenuItem.Tag = x.host;
                 ConnectClientMenuItem.Click += new EventHandler(ConnectClientMenuItem_Click);
-                if (x.host == Dns.GetHostName() || x.wanip == this.ExternalIp || x.rdpopen == false)
+                if (x.host == Dns.GetHostName() || x.wanip == this.ExternalIp)
                 {
+                    ConnectClientMenuItem.ToolTipText = "Computer can not connect to itself.";
+                    ConnectClientMenuItem.Enabled = false;
+                }
+                if (x.wanip == "")
+                {
+                    ConnectClientMenuItem.ToolTipText = "Remote computer could not determine WAN IP address.";
                     ConnectClientMenuItem.Enabled = false;
                 }
                 HostMenuItem.DropDownItems.Add(ConnectClientMenuItem);

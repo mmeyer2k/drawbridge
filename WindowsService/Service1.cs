@@ -1,8 +1,6 @@
 ﻿using System;
-using System.ComponentModel;
 using System.ServiceProcess;
 using Mono.Nat;
-using System.Diagnostics;
 using drawbridge;
 using System.IO;
 using System.Threading;
@@ -21,28 +19,13 @@ namespace WindowsService
             this.CanStop = true;
             this.CanPauseAndContinue = true;
 
-            // Setup logging
-            this.AutoLog = true;
-
-            ((ISupportInitialize)this.EventLog).BeginInit();
-
-            if (!EventLog.SourceExists(this.ServiceName))
-            {
-                EventLog.CreateEventSource(this.ServiceName, "Application");
-            }
-
-            ((ISupportInitialize)this.EventLog).EndInit();
-
-            this.EventLog.Source = this.ServiceName;
-            this.EventLog.Log = "Application";
-
             try
             {
                 InitializeComponent();
             }
             catch (Exception exc)
             {
-                this.EventLog.WriteEntry(exc.ToString(), EventLogEntryType.Warning);
+
             }
         }
 
@@ -73,7 +56,7 @@ namespace WindowsService
             }
             catch (Exception exc)
             {
-                this.EventLog.WriteEntry(exc.ToString(), EventLogEntryType.Warning);
+
             }
         }
 
@@ -93,14 +76,12 @@ namespace WindowsService
                 long stamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
                 if (stamp - Int32.Parse(File.ReadAllText(tmp)) < 60)
                 {
-                    this.EventLog.WriteEntry("UI is running... skipping ping.", EventLogEntryType.Information);
-
                     return;
                 }
             }
             catch (Exception exc)
             {
-                this.EventLog.WriteEntry(exc.ToString(), EventLogEntryType.Warning);
+
             }
 
             // Get the API key and protocol key from registry
@@ -111,8 +92,6 @@ namespace WindowsService
             // write a log entry and abory until next loop
             if (this.RouterFound == false || ApiKey == "" || Key == "")
             {
-                this.EventLog.WriteEntry("Skipping ping.", EventLogEntryType.Warning);
-
                 return;
             }
 
@@ -124,7 +103,7 @@ namespace WindowsService
             }
             catch (Exception exc)
             {
-                this.EventLog.WriteEntry(exc.ToString(), EventLogEntryType.Warning);
+
             }
 
             // If this ping request resulted in commands which were processed, then a 

@@ -1,6 +1,7 @@
 ﻿using Mono.Nat;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Management;
 using System.Net;
 using System.Net.Http;
@@ -28,7 +29,16 @@ namespace drawbridge
 
         public async System.Threading.Tasks.Task<dynamic> SendAsync(INatDevice Router, string ApiKey, string Key)
         {
-            this.ExternalIP = Router.GetExternalIP().ToString();
+            try
+            {
+                this.ExternalIP = Router.GetExternalIP().ToString();
+            }
+            catch (Exception exc)
+            {
+                Debug.WriteLine(exc.Message);
+                this.ExternalIP = "";
+            }
+
             string Hostname = Dns.GetHostName();
 
             this.IsPortMapped = StaticHelpers.isPortMappedOnRouter(Router);
@@ -192,8 +202,8 @@ namespace drawbridge
             if (commandDecrypted == "open")
             {
                 int lifetime = Convert.ToInt32(Registry.Get("PortLifetime"));
-                Mapping mapping = new Mapping(Protocol.Tcp, 3389, rdpPortExternal, lifetime * 60);
-                mapping.Description = "Drawbridge [" + Dns.GetHostName() + "]";
+                string desc = "Drawbridge [" + Dns.GetHostName() + "]";
+                Mapping mapping = new Mapping(Protocol.Tcp, 3389, rdpPortExternal, lifetime * 60, desc);
                 Router.CreatePortMap(mapping);
             }
             else if (commandDecrypted == "close")
