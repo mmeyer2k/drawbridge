@@ -4,6 +4,7 @@ using Mono.Nat;
 using drawbridge;
 using System.IO;
 using System.Threading;
+using System.Diagnostics;
 
 namespace WindowsService
 {
@@ -67,21 +68,10 @@ namespace WindowsService
 
         protected async void OnTimer(object sender, System.Timers.ElapsedEventArgs args)
         {
-            // If UI is running then we can skip sending pings from the service
-            // This is done by reading the timestamp placed in the temp file and 
-            // seeing if it exceeds 1 minute
-            try
-            {
-                string tmp = Path.Combine(Path.GetTempPath(), "DrawbridgeTimestamp.txt");
-                long stamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
-                if (stamp - Int32.Parse(File.ReadAllText(tmp)) < 60)
-                {
-                    return;
-                }
-            }
-            catch (Exception exc)
-            {
-
+            // If drawbridge is already running then abort this ping
+            Process[] pname = Process.GetProcessesByName("drawbridge");
+            if (pname.Length > 0) {
+                return;
             }
 
             // Get the API key and protocol key from registry

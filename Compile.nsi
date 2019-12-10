@@ -1,6 +1,6 @@
 Name "Drawbridge"
 
-!define VERSION_STRING "0.0.19"
+!define VERSION_STRING "0.0.20"
 
 !include "MUI2.nsh"
   

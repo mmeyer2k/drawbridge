@@ -1,13 +1,18 @@
-drawbridge - changelog
+drawbridge | changelog
 
 [todo]
 + add "start UI on login" feature
 + add gateway ip to protocol and interface
 + allow socks5 proxies for comms with server
-+ use mutex in service to prevent double pings instead of tmp file (cleaner, fewer writes)
 + make service install terminals close after running
 + add arbitrary port mappings feature
 + add a help screen
+
+[0.0.20]
++ Better service ping mutex/less disk io
++ Improved GUI command handling
++ Improved detection of lan ip address
++ Upgrade to use Harpocrates 1.0.0 symmetric encryption library
 
 [0.0.19]
 + Fix System.Net.Http references

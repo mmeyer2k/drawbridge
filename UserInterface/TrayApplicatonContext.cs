@@ -473,7 +473,11 @@ namespace drawbridge
         {
             ToolStripItem s = sender as ToolStripItem;
 
-            RemoteMachine node = Ping.RemoteMachines[s.Tag.ToString()];
+            string host = s.Tag.ToString();
+
+            setHostBlueDot(host);
+
+            RemoteMachine node = Ping.RemoteMachines[host];
 
             await PingRequest.SendCommandToTargetAsync(node.host, "close");
 
@@ -484,33 +488,39 @@ namespace drawbridge
         {
             ToolStripItem s = sender as ToolStripItem;
 
-            string name = s.Tag.ToString();
+            string host = s.Tag.ToString();
+            
+            setHostBlueDot(host);
 
-            // Add blue dot to machine name in menu list
-            foreach (var i in this.TrayIconContextMenu.Items)
-            {
-                ToolStripMenuItem item = i as ToolStripMenuItem;
-                if (item != null && item.Name.Equals("menu___" + name))
-                {
-                    item.Image = Properties.Resources.bullet_blue;
-                    break;
-                }
-            }
-
-            RemoteMachine node = Ping.RemoteMachines[name];
+            RemoteMachine node = Ping.RemoteMachines[host];
 
             await PingRequest.SendCommandToTargetAsync(node.host, "open");
 
             timerTickAsync(null, null);
         }
 
+        private void setHostBlueDot(string host)
+        {
+            foreach (var i in this.TrayIconContextMenu.Items)
+            {
+                ToolStripMenuItem item = i as ToolStripMenuItem;
+                if (item != null && item.Name.Equals("menu___" + host))
+                {
+                    item.Image = Properties.Resources.bullet_blue;
+                    break;
+                }
+            }
+        }
+
         private async void RandomizePortMenuItem_Click(object sender, EventArgs e)
         {
             ToolStripItem s = sender as ToolStripItem;
 
-            s.Image = Properties.Resources.bullet_blue;
+            string host = s.Tag.ToString();
 
-            RemoteMachine node = Ping.RemoteMachines[s.Tag.ToString()];
+            setHostBlueDot(host);
+
+            RemoteMachine node = Ping.RemoteMachines[host];
 
             await PingRequest.SendCommandToTargetAsync(node.host, "randomize");
 
@@ -521,9 +531,11 @@ namespace drawbridge
         {
             ToolStripItem s = sender as ToolStripItem;
 
-            s.Image = Properties.Resources.bullet_blue;
+            string host = s.Tag.ToString();
 
-            RemoteMachine node = Ping.RemoteMachines[s.Tag.ToString()];
+            setHostBlueDot(host);
+
+            RemoteMachine node = Ping.RemoteMachines[host];
 
             Process.Start("mstsc", "/v:" + node.wanip + ":" + node.port);
         }

@@ -102,9 +102,9 @@ namespace drawbridge
                 }
 
                 // discard virtual cards (virtual box, virtual pc, etc.)
-                if ((i.Name.IndexOf("virtual", StringComparison.OrdinalIgnoreCase) >= 0) ||
-                    (i.Name.IndexOf("loopback", StringComparison.OrdinalIgnoreCase) >= 0) ||
-                    (i.Name.IndexOf("npcap", StringComparison.OrdinalIgnoreCase) >= 0))
+                if ((i.Description.IndexOf("virtual", StringComparison.OrdinalIgnoreCase) >= 0) ||
+                    (i.Description.IndexOf("loopback", StringComparison.OrdinalIgnoreCase) >= 0) ||
+                    (i.Description.IndexOf("npcap", StringComparison.OrdinalIgnoreCase) >= 0))
                 {
                     continue;
                 }
