@@ -47,6 +47,7 @@ namespace drawbridge
                 { 1440, "24 Hours"},
                 { 2880, "48 Hours"},
                 { 4320, "72 Hours"},
+                { 5760, "96 Hours"},
             };
 
         public TrayApplicationContext()

@@ -10,7 +10,9 @@ drawbridge - changelog
 + add a help screen
 
 [0.0.19]
-+ fix blue dot icon when launching port open command
++ Fix System.Net.Http references
++ Fix blue dot icon when launching port open command
++ Revert back to Mono.Nat 1.1
 
 [0.0.18]
 + Allows using the application even if router can not report public IP

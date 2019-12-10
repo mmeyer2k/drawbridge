@@ -1,10 +1,10 @@
 Name "Drawbridge"
 
-!define VERSION_STRING "0.0.18"
+!define VERSION_STRING "0.0.19"
 
 !include "MUI2.nsh"
   
-OutFile "DrawbridgeInstall.exe"
+OutFile "Drawbridge-${VERSION_STRING}.exe"
 
 InstallDir "$PROGRAMFILES\Drawbridge"
 
