@@ -9,9 +9,13 @@ drawbridge - changelog
 + add arbitrary port mappings feature
 + add a help screen
 
+[0.0.19]
++ fix blue dot icon when launching port open command
+
 [0.0.18]
 + Allows using the application even if router can not report public IP
 + Removes overly verbose system event code
++ Update to Mono.Nat 2.0
 
 [0.0.17]
 Fix connection icon not returning to green after connection restored

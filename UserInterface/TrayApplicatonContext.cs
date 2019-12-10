@@ -483,9 +483,20 @@ namespace drawbridge
         {
             ToolStripItem s = sender as ToolStripItem;
 
-            s.Image = Properties.Resources.bullet_blue;
+            string name = s.Tag.ToString();
 
-            RemoteMachine node = Ping.RemoteMachines[s.Tag.ToString()];
+            // Add blue dot to machine name in menu list
+            foreach (var i in this.TrayIconContextMenu.Items)
+            {
+                ToolStripMenuItem item = i as ToolStripMenuItem;
+                if (item != null && item.Name.Equals("menu___" + name))
+                {
+                    item.Image = Properties.Resources.bullet_blue;
+                    break;
+                }
+            }
+
+            RemoteMachine node = Ping.RemoteMachines[name];
 
             await PingRequest.SendCommandToTargetAsync(node.host, "open");
 
@@ -698,7 +709,7 @@ namespace drawbridge
             // Once a ping sequence has been fully completed, reset the fails counter
             this.FailedPings = 0;
         }
-
+        
         private void DeviceFound(object sender, DeviceEventArgs args)
         {
             this.Router = args.Device;
@@ -718,10 +729,15 @@ namespace drawbridge
             {
                 HostMenuItem.Image = Properties.Resources.bullet_blue;
             }
-            else if (x.rdpopen == false)
+            else if (x.wanip == "")
             {
                 HostMenuItem.Image = Properties.Resources.bullet_red;
-                HostMenuItem.ToolTipText = "RDP not listening on this host.";
+                HostMenuItem.ToolTipText = "Host error: could not configure router";
+            }
+            else if (x.rdpopen == false)
+            {
+                HostMenuItem.Image = Properties.Resources.bullet_yellow;
+                HostMenuItem.ToolTipText = "Host error: RDP service not listening on this host";
             }
             else if (x.status == "open")
             {
