@@ -203,7 +203,7 @@ namespace drawbridge
             {
                 int lifetime = Convert.ToInt32(Registry.Get("PortLifetime"));
                 string desc = "Drawbridge [" + Dns.GetHostName() + "]";
-                Mapping mapping = new Mapping(Protocol.Tcp, 3389, rdpPortExternal, lifetime * 60, desc);
+                Mapping mapping = new Mapping(Protocol.Tcp, 3389, rdpPortExternal, lifetime * 60);
                 Router.CreatePortMap(mapping);
             }
             else if (commandDecrypted == "close")
