@@ -6,7 +6,13 @@ drawbridge | changelog
 + allow socks5 proxies for comms with server
 + make service install terminals close after running
 + add arbitrary port mappings feature
++ add a doorbell
 + add a help screen
+
+[0.0.21]
++ Fixed multiple implementation mistakes in primary timer loop code
++ Better debugging messages
++ Add update messages to menu based off of server response
 
 [0.0.20]
 + Better service ping mutex/less disk io

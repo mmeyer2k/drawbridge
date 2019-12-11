@@ -16,7 +16,7 @@ namespace drawbridge
     {
         private NotifyIcon TrayIcon;
         private ContextMenuStrip TrayIconContextMenu;
-        public System.Windows.Forms.Timer loopTimer = new System.Windows.Forms.Timer();
+        public System.Timers.Timer loopTimer;
         public string ExternalIp;
         public bool isPortOpen = false;
         public PingRequest Ping;
@@ -27,7 +27,7 @@ namespace drawbridge
         ToolStripMenuItem IntervalPicker = new ToolStripMenuItem();
         ToolStripLabel PortDisplayLabelItem = new ToolStripLabel();
         ToolStripMenuItem WindowsServiceMenuItem = new ToolStripMenuItem();
-        ToolStripMenuItem UpdateMenuItem = new ToolStripMenuItem();
+        ToolStripMenuItem UpdateAvailableMenuItem = new ToolStripMenuItem();
 
         public Dictionary<int, string> PingsIntervals = new Dictionary<int, string> {
                 { 10, "10 Seconds" },
@@ -39,15 +39,15 @@ namespace drawbridge
             };
 
         public Dictionary<int, string> Lifetimes = new Dictionary<int, string> {
-                { 15, "15 Minutes"},
-                { 30, "30 Minutes"},
-                { 60, "1 Hour"},
-                { 240, "4 Hours"},
-                { 480, "8 Hours"},
-                { 1440, "24 Hours"},
-                { 2880, "48 Hours"},
-                { 4320, "72 Hours"},
-                { 5760, "96 Hours"},
+                { 15, "15 Minutes" },
+                { 30, "30 Minutes" },
+                { 60, "1 Hour" },
+                { 240, "4 Hours" },
+                { 480, "8 Hours" },
+                { 1440, "24 Hours" },
+                { 2880, "48 Hours" },
+                { 4320, "72 Hours" },
+                { 5760, "96 Hours" },
             };
 
         public TrayApplicationContext()
@@ -116,8 +116,11 @@ namespace drawbridge
             }
 
             // Start the main timer loop
-            this.loopTimer.Tick += new EventHandler(timerTickAsync);
+            this.loopTimer = new System.Timers.Timer();
             this.loopTimer.Interval = Int32.Parse(Registry.Get("Interval")) * 1000;
+            this.loopTimer.Elapsed += timerTickAsync;
+            this.loopTimer.AutoReset = true;
+            this.loopTimer.Enabled = true;
             this.loopTimer.Start();
             timerTickAsync(null, null);
 
@@ -231,15 +234,17 @@ namespace drawbridge
             SettingsMenuItem.DropDownItems.Add(WindowsServiceMenuItem);
 
             this.RefreshWindowsServiceMenu();
+            
+            this.UpdateAvailableMenuItem.Visible = false;
+            this.UpdateAvailableMenuItem.Text = "Update Available!";
+            this.UpdateAvailableMenuItem.Click += new EventHandler(UpdateAvailableMenuItem_Click);
+            this.TrayIconContextMenu.Items.Add(this.UpdateAvailableMenuItem);
 
             ToolStripMenuItem RefreshMenuItem = new ToolStripMenuItem();
             RefreshMenuItem.Text = "Refresh";
             RefreshMenuItem.Click += new EventHandler(RefreshMenuItem_Click);
             this.TrayIconContextMenu.Items.Add(RefreshMenuItem);
-
-            this.UpdateMenuItem.Text = "Update Available!";
-            this.UpdateMenuItem.Visible = false;
-            this.TrayIconContextMenu.Items.Add(this.UpdateMenuItem);
+            
 
             ToolStripMenuItem CloseMenuItem = new ToolStripMenuItem();
             CloseMenuItem.Text = "Close";
@@ -398,6 +403,11 @@ namespace drawbridge
                 };
                 WindowsServiceMenuItem.DropDownItems.Add(InstallServiceMenuItem);
             }
+        }
+
+        private void UpdateAvailableMenuItem_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://drawbridge.xyz");
         }
 
         private void RefreshMenuItem_Click(object sender, EventArgs e)
@@ -562,11 +572,7 @@ namespace drawbridge
 
         public async void timerTickAsync(object sender, EventArgs e)
         {
-            // Save a timestamp file on every ping which is how
-            // the service knows when the UI is running
-            string tmp = Path.Combine(Path.GetTempPath(), "DrawbridgeTimestamp.txt");
-            long stamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
-            File.WriteAllText(tmp, stamp.ToString());
+            Console.WriteLine("The timer ticked at {0:HH:mm:ss.fff}", DateTime.UtcNow);
 
             // Get some basic settings items out of the registry
             // which are required to make an API ping call
@@ -584,7 +590,7 @@ namespace drawbridge
             string host = Dns.GetHostName();
 
             // Reset timer interval incase it was changed in the settings
-            this.loopTimer.Interval = Int32.Parse(Interval) * 10000;
+            this.loopTimer.Interval = Int32.Parse(Interval) * 1000;
 
             // If the router object is still being found, skip this ping
             if (Router == null)
@@ -618,7 +624,7 @@ namespace drawbridge
             }
             catch (Exception exc)
             {
-                //MessageBox.Show(exc.InnerException.Message);
+                Console.WriteLine(exc.Message);
 
                 this.FailedPings++;
 
@@ -642,6 +648,12 @@ namespace drawbridge
             {
                 this.TitleMenuItem.Image = Properties.Resources.bullet_green;
                 this.TitleMenuItem.ToolTipText = String.Format("Your API key is valid for {0} more days", Ping.LifeTime / (60 * 60 * 24));
+            }
+
+            // Display the update available menu item if update is available
+            if (Ping.Version != StaticHelpers.GetVersion())
+            {
+                this.UpdateAvailableMenuItem.Visible = true;
             }
 
             // Keep running list of discovered machines, so that expired ones can be removed after

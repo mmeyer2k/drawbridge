@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserInterface", "UserInterf
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsService", "WindowsService\WindowsService.csproj", "{EBCB61CA-D400-4C38-BF76-2B5849582D01}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{97E2B3B4-44A1-4E3B-8D18-2512D9DB560F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{EBCB61CA-D400-4C38-BF76-2B5849582D01}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EBCB61CA-D400-4C38-BF76-2B5849582D01}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EBCB61CA-D400-4C38-BF76-2B5849582D01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97E2B3B4-44A1-4E3B-8D18-2512D9DB560F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97E2B3B4-44A1-4E3B-8D18-2512D9DB560F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97E2B3B4-44A1-4E3B-8D18-2512D9DB560F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97E2B3B4-44A1-4E3B-8D18-2512D9DB560F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

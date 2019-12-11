@@ -2,3 +2,5 @@
 packages/
 *.suo
 *.exe
+UnitTests/bin/*
+UnitTests/obj/*
