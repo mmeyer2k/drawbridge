@@ -651,9 +651,13 @@ namespace drawbridge
             }
 
             // Display the update available menu item if update is available
-            if (Ping.Version != StaticHelpers.GetVersion())
+            try
             {
-                this.UpdateAvailableMenuItem.Visible = true;
+                this.UpdateAvailableMenuItem.Visible = Ping.Version != null && Ping.Version != StaticHelpers.GetVersion();
+            }
+            catch(Exception exc)
+            {
+                Console.WriteLine(exc.Message);
             }
 
             // Keep running list of discovered machines, so that expired ones can be removed after

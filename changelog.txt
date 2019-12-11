@@ -9,6 +9,10 @@ drawbridge | changelog
 + add a doorbell
 + add a help screen
 
+[0.0.22]
++ Fixed error in update display code
+
+
 [0.0.21]
 + Fixed multiple implementation mistakes in primary timer loop code
 + Better debugging messages
